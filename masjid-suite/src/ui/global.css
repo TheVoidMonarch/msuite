@@ -1,0 +1,403 @@
+/* Global CSS Reset with Accessibility Features */
+
+/* Box sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Root font size - 18px as requested */
+html {
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Body defaults */
+body {
+  font-family: var(--font-family-sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif);
+  font-size: var(--font-size-lg, 1.125rem); /* 18px */
+  line-height: 1.6;
+  color: var(--color-neutral-900, #171717);
+  background-color: var(--color-neutral-50, #fafafa);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  body {
+    color: var(--color-neutral-900, #000000);
+    background-color: var(--color-neutral-50, #ffffff);
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--color-neutral-50, #fafafa);
+    background-color: var(--color-neutral-900, #171717);
+  }
+}
+
+/* Class-based theme overrides */
+.high-contrast body {
+  color: var(--color-neutral-900, #000000) !important;
+  background-color: var(--color-neutral-50, #ffffff) !important;
+}
+
+.dark body {
+  color: var(--color-neutral-50, #fafafa);
+  background-color: var(--color-neutral-900, #171717);
+}
+
+/* Remove list styles */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Improve heading line heights */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3;
+  font-weight: 600;
+  color: inherit;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Remove default input styles */
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Remove default link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Improve image defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Remove built-in form typography styles */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+/* Focus management */
+:focus {
+  outline: none;
+}
+
+/* Focus-visible styles for keyboard navigation */
+:focus-visible {
+  outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, #0284c7);
+  outline-offset: var(--focus-ring-offset, 2px);
+}
+
+/* Interactive elements minimum size for touch targets */
+button, 
+a, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"],
+input[type="file"]::-webkit-file-upload-button,
+[role="button"] {
+  min-height: var(--min-touch-target, 44px);
+  min-width: var(--min-touch-target, 44px);
+}
+
+/* Ensure interactive elements have sufficient spacing */
+button:not(:last-child),
+a:not(:last-child),
+input[type="button"]:not(:last-child),
+input[type="submit"]:not(:last-child),
+input[type="reset"]:not(:last-child),
+[role="button"]:not(:last-child) {
+  margin-right: var(--spacing-2, 0.5rem);
+}
+
+/* High contrast focus indicators */
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline-color: var(--color-neutral-900, #000000);
+    outline-width: 3px;
+  }
+}
+
+/* Improve readability in high contrast mode */
+@media (prefers-contrast: high) {
+  * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  
+  button, 
+  input, 
+  textarea, 
+  select {
+    border: 2px solid var(--color-neutral-900, #000000) !important;
+  }
+}
+
+/* Skip link styles */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-primary-600, #0284c7);
+  color: var(--color-neutral-50, #fafafa);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: var(--z-index-skip-link, 1600);
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Print styles */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a, a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  
+  .ir a:after,
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+  
+  pre, blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr, img {
+    page-break-inside: avoid;
+  }
+  
+  img {
+    max-width: 100% !important;
+  }
+  
+  @page {
+    margin: 0.5cm;
+  }
+  
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}
+
+/* Utility classes */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus management for roving tabindex */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Ensure sufficient color contrast */
+::selection {
+  background-color: var(--color-primary-200, #bae6fd);
+  color: var(--color-neutral-900, #171717);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary-200, #bae6fd);
+  color: var(--color-neutral-900, #171717);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neutral-100, #f5f5f5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-400, #a3a3a3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-500, #737373);
+}
+
+/* Firefox scrollbar styling */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-neutral-400, #a3a3a3) var(--color-neutral-100, #f5f5f5);
+}
+
+/* Ensure proper stacking context for modals and overlays */
+[aria-modal="true"] {
+  z-index: var(--z-index-modal, 1400);
+}
+
+[role="dialog"] {
+  z-index: var(--z-index-modal, 1400);
+}
+
+/* Ensure proper focus management for dialogs */
+[aria-modal="true"]:focus {
+  outline: none;
+}
+
+/* Improve button and interactive element consistency */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: all var(--transition-normal, 200ms) ease;
+}
+
+/* Disabled state for interactive elements */
+button:disabled,
+[role="button"][aria-disabled="true"],
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Animation and transition defaults */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: var(--transition-normal, 200ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
