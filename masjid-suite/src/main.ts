@@ -1,7 +1,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
 import { setupWindowHandlers } from './main/windowManager';
-import { initDatabase } from './main/db';
-import { setupIpcHandlers } from './main/ipc-handlers';
+import DatabaseManager from './main/db';
+
+// Initialize database manager
+const dbManager = new DatabaseManager();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -13,12 +16,6 @@ if (require('electron-squirrel-startup')) {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   try {
-    // Initialize the database
-    await initDatabase();
-    
-    // Set up IPC handlers
-    setupIpcHandlers();
-    
     // Set up window handlers
     setupWindowHandlers();
     
@@ -26,8 +23,9 @@ app.whenReady().then(async () => {
     createWindow();
     
     // Set up auto-updates in production
-    if (!process.env.IS_TEST && process.env.NODE_ENV === 'production') {
-      require('update-electron-app')();
+    if (process.env.NODE_ENV === 'production') {
+      const { default: updateElectronApp } = await import('update-electron-app');
+      updateElectronApp();
     }
   } catch (error) {
     console.error('Failed to start application:', error);
@@ -67,11 +65,11 @@ function createWindow() {
   });
 
   // and load the index.html of the app.
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
+  if (process.env.NODE_ENV === 'development') {
+    await mainWindow.loadURL('http://localhost:3000');
   } else {
-    mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    await mainWindow.loadFile(
+      path.join(__dirname, '../renderer/index.html')
     );
   }
 
