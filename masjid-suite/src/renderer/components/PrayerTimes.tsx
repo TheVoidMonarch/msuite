@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardBody, CardHeader, Heading, Button, TextInput } from '../../ui';
+import { openPrayerTimesWindow } from '../../utils/windowManager';
+
+declare global {
+  interface Window {
+    electron: {
+      openPrayerTimesWindow: () => Promise<void>;
+    };
+  }
+}
 
 export const PrayerTimes: React.FC = () => {
   const [editMode, setEditMode] = React.useState(false);
+  
+  const handleFullScreen = async () => {
+    try {
+      if (window.electron) {
+        await window.electron.openPrayerTimesWindow();
+      } else {
+        // Fallback for development
+        openPrayerTimesWindow();
+      }
+    } catch (error) {
+      console.error('Error opening prayer times window:', error);
+    }
+  };
   
   const prayerTimes = [
     { name: 'Fajr', time: '05:30' },
@@ -18,12 +40,24 @@ export const PrayerTimes: React.FC = () => {
         <Heading level={1} size="4xl" color="primary">
           Prayer Times
         </Heading>
-        <Button 
-          variant={editMode ? 'outline' : 'primary'} 
-          onClick={() => setEditMode(!editMode)}
-        >
-          {editMode ? 'Cancel' : 'Edit Times'}
-        </Button>
+        <div className="flex space-x-4">
+          <Button 
+            variant="outline"
+            onClick={handleFullScreen}
+            className="flex items-center space-x-2"
+          >
+            <span>Full Screen</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M5 9V7a1 1 0 011-1h4a1 1 0 110 2H7v2a1 1 0 11-2 0zm6-5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h3v-3a1 1 0 011-1zm14 0a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h3v-3a1 1 0 011-1zm-3 6a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+          </Button>
+          <Button 
+            variant={editMode ? 'outline' : 'primary'} 
+            onClick={() => setEditMode(!editMode)}
+          >
+            {editMode ? 'Cancel' : 'Edit Times'}
+          </Button>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>

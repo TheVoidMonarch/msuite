@@ -5,6 +5,7 @@ import { ThemeProvider } from '../ui';
 import { AppShell } from './components/AppShell';
 import { Dashboard } from './components/Dashboard';
 import { PrayerTimes } from './components/PrayerTimes';
+import { PrayerTimesDisplay } from './components/PrayerTimesDisplay';
 import { Announcements } from './components/Announcements';
 import { Community } from './components/Community';
 import { BackupSecurity } from './components/BackupSecurity';
@@ -25,6 +26,7 @@ export const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/prayer-times" element={<PrayerTimes />} />
+            <Route path="/prayer-display" element={<PrayerTimesDisplay isFullScreen />} />
             <Route path="/announcements" element={<Announcements />} />
             <Route path="/community" element={<Community />} />
             <Route path="/backup-security" element={<BackupSecurity />} />

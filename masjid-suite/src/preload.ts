@@ -68,6 +68,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getPath: (): Promise<string> => 
       ipcRenderer.invoke('db:get-path'),
   },
+  
+  // Window management
+  windows: {
+    openPrayerTimesWindow: (): Promise<void> => ipcRenderer.invoke('window:open-prayer-times'),
+  },
 });
 
 // Define the type for the exposed API

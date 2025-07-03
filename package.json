@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@types/date-fns": "^2.5.3",
+    "adhan": "^4.4.3",
     "crypto-js": "^4.2.0",
+    "date-fns": "^4.1.0",
+    "idb": "^8.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "sqlite3": "^5.1.7"
