@@ -13,8 +13,15 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
+      "@/*": ["./src/*"],
+      "@renderer/*": ["src/renderer/*"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "typeRoots": [
+    "./node_modules/@types",
+    "./src/renderer/types",
+    "./src/types"
+  ]
 }

@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain, screen } from 'electron';
 import path from 'path';
-import { isDevelopment } from '../constants';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 let prayerWindow: BrowserWindow | null = null;
 

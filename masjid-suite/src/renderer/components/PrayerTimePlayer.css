@@ -1,0 +1,195 @@
+.prayer-time-player {
+  max-width: 400px;
+  margin: 1rem auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.player-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.mute-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: white;
+  padding: 0;
+}
+
+.mute-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.player-content {
+  padding: 1.25rem;
+}
+
+.current-prayer,
+.next-prayer {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-background-secondary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.current-prayer {
+  background-color: var(--color-primary-light);
+  border-left: 4px solid var(--color-primary);
+}
+
+.current-prayer-label,
+.next-prayer-label {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.current-prayer-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin: 0.5rem 0;
+}
+
+.next-prayer-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0.25rem 0;
+}
+
+.next-prayer-time {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0.5rem 0;
+}
+
+.time-remaining {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.5rem;
+}
+
+.stop-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}
+
+.prayer-times-list {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+}
+
+.prayer-time-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.prayer-time-item:last-child {
+  border-bottom: none;
+}
+
+.prayer-time-item:hover {
+  background-color: var(--color-background-secondary);
+}
+
+.prayer-time-item.active {
+  background-color: var(--color-primary-light);
+  border-left: 3px solid var(--color-primary);
+}
+
+.prayer-name {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.prayer-time {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Animation for current prayer */
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+.current-prayer {
+  animation: pulse 2s infinite;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .prayer-time-player {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+  
+  .current-prayer-name {
+    font-size: 1.25rem;
+  }
+  
+  .next-prayer-name {
+    font-size: 1.1rem;
+  }
+  
+  .next-prayer-time {
+    font-size: 1.3rem;
+  }
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] .prayer-time-item {
+  border-bottom-color: var(--color-border-dark);
+}
+
+[data-theme='dark'] .current-prayer {
+  background-color: var(--color-primary-dark);
+  color: white;
+}
+
+[data-theme='dark'] .current-prayer .current-prayer-name {
+  color: white;
+}
+
+[data-theme='dark'] .prayer-time-item.active {
+  background-color: var(--color-primary-dark);
+  color: white;
+}
+
+[data-theme='dark'] .prayer-time-item.active .prayer-name,
+[data-theme='dark'] .prayer-time-item.active .prayer-time {
+  color: white;
+}

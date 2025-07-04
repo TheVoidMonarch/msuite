@@ -14,7 +14,7 @@ if (require('electron-squirrel-startup')) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
   try {
     // Set up window handlers
     setupWindowHandlers();
@@ -22,11 +22,8 @@ app.whenReady().then(async () => {
     // Create the main window
     createWindow();
     
-    // Set up auto-updates in production
-    if (process.env.NODE_ENV === 'production') {
-      const { default: updateElectronApp } = await import('update-electron-app');
-      updateElectronApp();
-    }
+    // Auto-update functionality can be implemented here
+    // Consider using electron-updater or a similar solution in the future
   } catch (error) {
     console.error('Failed to start application:', error);
     app.quit();
@@ -53,7 +50,7 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-function createWindow() {
+async function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1200,

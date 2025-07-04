@@ -6,7 +6,7 @@ import { PrayerTime, CommunityMember, Announcement, AppSettings, BackupMeta, DbR
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
-contextBridge.exposeInMainWorld('electronAPI', {
+contextBridge.exposeInMainWorld('__electronAPI', {
   // Prayer Times API
   prayerTimes: {
     get: (date?: string): Promise<DbResult<PrayerTime[]>> => 
@@ -108,11 +108,19 @@ export interface ElectronAPI {
   db: {
     getPath: () => Promise<string>;
   };
+  windows: {
+    openPrayerTimesWindow: () => Promise<void>;
+  };
 }
 
-// Extend the Window interface to include our API
+// Make TypeScript aware of our custom window type
 declare global {
   interface Window {
-    electronAPI: ElectronAPI;
+    __electronAPI: ElectronAPI;
   }
 }
+
+// Type assertion for the window object
+const customWindow = window as unknown as Window & {
+  __electronAPI: ElectronAPI;
+};
