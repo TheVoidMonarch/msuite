@@ -16,9 +16,17 @@
       "*": ["node_modules/*"],
       "@/*": ["./src/*"],
       "@renderer/*": ["src/renderer/*"]
-    }
+    },
+    "types": ["node", "jest"],
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "isolatedModules": true,
+    "noEmit": true
   },
   "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "typeRoots": [
     "./node_modules/@types",
     "./src/renderer/types",

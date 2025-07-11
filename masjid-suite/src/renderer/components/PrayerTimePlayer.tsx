@@ -112,7 +112,7 @@ export const PrayerTimePlayer: React.FC<PrayerTimePlayerProps> = ({
           if (!isMuted) {
             playAzan(prayer.audioFile || defaultAudioFiles[prayer.name] || '/sounds/azan.mp3');
           }
-          onPrayerTimeRealed?.(prayer.name);
+          onPrayerTimeReached?.(prayer.name);
         }
         break;
       }

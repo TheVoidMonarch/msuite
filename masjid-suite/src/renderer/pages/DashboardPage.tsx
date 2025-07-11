@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../../ui/Card';
-import { Activity, Users, Calendar, DollarSign } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
+import { Activity, Users, Calendar, DollarSign, BookOpen, Clock, ChevronRight } from 'lucide-react';
+import { Button } from '../ui/Button';
 import { PrayerTimePlayer } from '../components/PrayerTimePlayer';
 import './DashboardPage.css';
 
@@ -158,13 +159,18 @@ export const DashboardPage: React.FC = () => {
                         <span>{event.location}</span>
                       </div>
                     </div>
-                    <button className="event-action">
+                    <button className="event-action" title="View event details">
                       <ChevronRight size={16} />
                     </button>
                   </div>
                 ))}
-                <Button variant="outline" className="view-all-events">
+                <Button 
+                  variant="outline" 
+                  className="view-all-events"
+                  title="View all events"
+                >
                   View All Events
+                  <ChevronRight size={16} />
                 </Button>
               </CardContent>
             </Card>
