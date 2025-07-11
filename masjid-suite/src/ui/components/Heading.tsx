@@ -219,8 +219,5 @@ export const H6: React.FC<Omit<HeadingProps, 'level'>> = (props) => (
   <Heading level={6} {...props} />
 );
 
-// Export types
-export type { HeadingLevel, HeadingSize };
-
 // Default export
 export default Heading;

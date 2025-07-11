@@ -1,0 +1,242 @@
+/* Base input styles */
+.input {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-normal);
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-normal) ease;
+  width: 100%;
+  outline: none;
+}
+
+/* Input states */
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--color-neutral-50);
+}
+
+.input:focus {
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-primary-200);
+}
+
+/* Size variants */
+.inputSm {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-2) var(--spacing-3);
+  min-height: 40px;
+}
+
+.inputMd {
+  font-size: var(--font-size-base);
+  padding: var(--spacing-3) var(--spacing-4);
+  min-height: 48px;
+}
+
+.inputLg {
+  font-size: var(--font-size-lg);
+  padding: var(--spacing-4) var(--spacing-5);
+  min-height: 56px;
+}
+
+/* Variant styles */
+.outlined {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+}
+
+.outlined:focus {
+  border-color: var(--color-primary-500);
+}
+
+.filled {
+  background-color: var(--color-neutral-50);
+  border: 1px solid transparent;
+}
+
+.filled:focus {
+  background-color: var(--color-white);
+  border-color: var(--color-primary-500);
+}
+
+.underlined {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid var(--color-neutral-300);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.underlined:focus {
+  border-bottom-color: var(--color-primary-500);
+  box-shadow: none;
+}
+
+/* Error and success states */
+.error {
+  border-color: var(--color-error-500) !important;
+}
+
+.error:focus {
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-error-200) !important;
+}
+
+.success {
+  border-color: var(--color-success-500) !important;
+}
+
+.success:focus {
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-success-200) !important;
+}
+
+/* High contrast mode */n.highContrast {
+  border: 2px solid var(--color-high-contrast-border);
+  background-color: var(--color-high-contrast-background);
+  color: var(--color-high-contrast-text);
+}
+
+/* Container */
+.container {
+  width: 100%;
+  margin-bottom: var(--spacing-4);
+}
+
+.containerFullWidth {
+  width: 100%;
+}
+
+/* Label */
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--spacing-1);
+}
+
+.highContrastLabel {
+  color: var(--color-high-contrast-text);
+}
+
+.requiredIndicator {
+  color: var(--color-error-500);
+  margin-left: var(--spacing-1);
+}
+
+/* Helper text */
+.helperText {
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-1);
+  line-height: var(--line-height-normal);
+}
+
+.helperTextDescription {
+  color: var(--color-neutral-600);
+}
+
+.helperTextError {
+  color: var(--color-error-600);
+}
+
+.helperTextSuccess {
+  color: var(--color-success-600);
+}
+
+/* Input wrapper */
+.inputWrapper {
+  position: relative;
+}
+
+/* Icons */
+.icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-500);
+}
+
+.iconLeft {
+  left: var(--spacing-3);
+}
+
+.iconRight {
+  right: var(--spacing-3);
+}
+
+/* Clear button */
+.clearButton {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-neutral-400);
+  padding: var(--spacing-1);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast) ease;
+  z-index: 2;
+}
+
+.clearButton:hover {
+  color: var(--color-neutral-600);
+}
+
+.clearButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-primary-200);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loadingSpinner {
+  position: absolute;
+  right: var(--spacing-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+.loadingSpinnerSm {
+  right: var(--spacing-3);
+}
+
+.loadingSpinnerLg {
+  right: var(--spacing-5);
+}
+
+/* Padding adjustments for icons */
+.withLeftIcon {
+  padding-left: 48px !important;
+}
+
+.withRightIcon {
+  padding-right: 48px !important;
+}
+
+.withLeftIconSm, .withRightIconSm {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+.withLeftIconLg, .withRightIconLg {
+  padding-left: 56px !important;
+  padding-right: 56px !important;
+}

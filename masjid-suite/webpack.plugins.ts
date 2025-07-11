@@ -5,8 +5,11 @@ import webpack from 'webpack';
 const ForkTsCheckerWebpackPlugin: typeof IForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 export const plugins = [
-  new ForkTsCheckerWebpackPlugin({
-    logger: 'webpack-infrastructure',
-  }),
+  // Skip type checking when FORGE_TS_SKIP environment variable is truthy (e.g. npm run start:no-types)
+  ...(process.env.FORGE_TS_SKIP ? [] : [
+    new ForkTsCheckerWebpackPlugin({
+      logger: 'webpack-infrastructure',
+    }),
+  ]),
   new webpack.EnvironmentPlugin({ NODE_ENV: process.env.NODE_ENV ?? 'production' }),
 ];

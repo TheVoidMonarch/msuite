@@ -1,0 +1,149 @@
+/* Dialog overlay */
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.dialogOverlayVisible {
+  opacity: 1;
+}
+
+/* Dialog */
+.dialog {
+  background: var(--dialog-bg, #ffffff);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 90%;
+  max-width: 32rem;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  transform: translateY(1rem);
+  transition: transform 200ms ease-in-out, opacity 200ms ease-in-out;
+  opacity: 0;
+}
+
+.dialogVisible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Dialog header */
+.dialogHeader {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #1a202c);
+}
+
+.dialogCloseButton {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: var(--text-secondary, #4a5568);
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialogCloseButton:hover {
+  background-color: var(--bg-hover, #f7fafc);
+  color: var(--text-primary, #1a202c);
+}
+
+.dialogCloseButton:focus {
+  outline: 2px solid var(--focus-ring, #90cdf4);
+  outline-offset: 2px;
+}
+
+/* Dialog body */
+.dialogBody {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 4rem;
+}
+
+/* Dialog footer */
+.dialogFooter {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* Dialog size variants */
+.dialog--sm {
+  max-width: 24rem;
+}
+
+.dialog--md {
+  max-width: 32rem;
+}
+
+.dialog--lg {
+  max-width: 42rem;
+}
+
+.dialog--xl {
+  max-width: 56rem;
+}
+
+.dialog--full {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+}
+
+/* High contrast mode */
+.highContrast {
+  --dialog-bg: var(--color-highContrast-background, #ffffff);
+  --dialog-border: 2px solid var(--color-highContrast-border, #000000);
+  --dialog-shadow: none;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(1rem); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slideOut {
+  from { transform: translateY(0); }
+  to { transform: translateY(1rem); }
+}

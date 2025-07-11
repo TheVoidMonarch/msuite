@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '../ThemeProvider';
+import styles from './TextInput.module.css';
 
 // TextInput variant types
 export type TextInputVariant = 'outlined' | 'filled' | 'underlined';
@@ -7,267 +8,97 @@ export type TextInputSize = 'sm' | 'md' | 'lg';
 export type TextInputType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'search' | 'number';
 
 // TextInput props interface
-export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
+export interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   variant?: TextInputVariant;
   size?: TextInputSize;
-  type?: TextInputType;
   label?: string;
   description?: string;
   error?: string;
   success?: string;
-  required?: boolean;
-  disabled?: boolean;
-  loading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  onClear?: () => void;
   clearable?: boolean;
+  loading?: boolean;
   fullWidth?: boolean;
+  highContrast?: boolean;
+  onClear?: () => void;
 }
 
-// Get input styles based on variant and theme
-const getInputStyles = (
+// Get CSS class names based on props
+const getInputClassName = (
   variant: TextInputVariant,
   size: TextInputSize,
   hasError: boolean,
   hasSuccess: boolean,
   disabled: boolean,
   loading: boolean,
-  isFocused: boolean,
   highContrast: boolean,
-  theme: any
-): React.CSSProperties => {
-  const baseStyles: React.CSSProperties = {
-    fontFamily: theme.typography.fontFamily.sans.join(', '),
-    fontWeight: theme.typography.fontWeight.normal,
-    borderRadius: theme.borderRadius.md,
-    transition: `all ${theme.transitions.normal} ease`,
-    width: '100%',
-    outline: 'none',
-    ...(disabled && {
-      opacity: 0.6,
-      cursor: 'not-allowed',
-      backgroundColor: theme.colors.neutral[50],
-    }),
-    ...(loading && {
-      cursor: 'wait',
-    }),
-  };
-
-  // Size styles
-  const sizeStyles: Record<TextInputSize, React.CSSProperties> = {
-    sm: {
-      fontSize: theme.typography.fontSize.sm,
-      padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
-      minHeight: '40px',
-    },
-    md: {
-      fontSize: theme.typography.fontSize.base,
-      padding: `${theme.spacing[3]} ${theme.spacing[4]}`,
-      minHeight: '48px',
-    },
-    lg: {
-      fontSize: theme.typography.fontSize.lg,
-      padding: `${theme.spacing[4]} ${theme.spacing[5]}`,
-      minHeight: '56px',
-    },
-  };
-
-  // Variant styles
-  const variantStyles: Record<TextInputVariant, React.CSSProperties> = {
-    outlined: {
-      backgroundColor: theme.colors.white,
-      border: `1px solid ${theme.colors.neutral[300]}`,
-      ...(isFocused && {
-        borderColor: theme.colors.primary[500],
-        boxShadow: `0 0 0 ${theme.accessibility.focusRingWidth} ${theme.colors.primary[200]}`,
-      }),
-      ...(hasError && {
-        borderColor: theme.colors.error[500],
-        ...(isFocused && {
-          boxShadow: `0 0 0 ${theme.accessibility.focusRingWidth} ${theme.colors.error[200]}`,
-        }),
-      }),
-      ...(hasSuccess && {
-        borderColor: theme.colors.success[500],
-        ...(isFocused && {
-          boxShadow: `0 0 0 ${theme.accessibility.focusRingWidth} ${theme.colors.success[200]}`,
-        }),
-      }),
-      ...(highContrast && {
-        border: `2px solid ${theme.colors.highContrast.border}`,
-        backgroundColor: theme.colors.highContrast.background,
-        ...(isFocused && {
-          outline: `3px solid ${theme.colors.highContrast.focus}`,
-          outlineOffset: '2px',
-        }),
-      }),
-    },
-    filled: {
-      backgroundColor: theme.colors.neutral[100],
-      border: '1px solid transparent',
-      borderBottom: `2px solid ${theme.colors.neutral[300]}`,
-      borderRadius: `${theme.borderRadius.md} ${theme.borderRadius.md} 0 0`,
-      ...(isFocused && {
-        backgroundColor: theme.colors.neutral[50],
-        borderBottomColor: theme.colors.primary[500],
-        boxShadow: `0 2px 0 0 ${theme.colors.primary[500]}`,
-      }),
-      ...(hasError && {
-        borderBottomColor: theme.colors.error[500],
-        ...(isFocused && {
-          boxShadow: `0 2px 0 0 ${theme.colors.error[500]}`,
-        }),
-      }),
-      ...(hasSuccess && {
-        borderBottomColor: theme.colors.success[500],
-        ...(isFocused && {
-          boxShadow: `0 2px 0 0 ${theme.colors.success[500]}`,
-        }),
-      }),
-      ...(highContrast && {
-        backgroundColor: theme.colors.highContrast.background,
-        border: `2px solid ${theme.colors.highContrast.border}`,
-        borderRadius: theme.borderRadius.md,
-      }),
-    },
-    underlined: {
-      backgroundColor: 'transparent',
-      border: 'none',
-      borderBottom: `1px solid ${theme.colors.neutral[300]}`,
-      borderRadius: 0,
-      ...(isFocused && {
-        borderBottomColor: theme.colors.primary[500],
-        borderBottomWidth: '2px',
-      }),
-      ...(hasError && {
-        borderBottomColor: theme.colors.error[500],
-        ...(isFocused && {
-          borderBottomWidth: '2px',
-        }),
-      }),
-      ...(hasSuccess && {
-        borderBottomColor: theme.colors.success[500],
-        ...(isFocused && {
-          borderBottomWidth: '2px',
-        }),
-      }),
-      ...(highContrast && {
-        borderBottom: `2px solid ${theme.colors.highContrast.border}`,
-        ...(isFocused && {
-          outline: `3px solid ${theme.colors.highContrast.focus}`,
-          outlineOffset: '2px',
-        }),
-      }),
-    },
-  };
-
-  return {
-    ...baseStyles,
-    ...sizeStyles[size],
-    ...variantStyles[variant],
-  };
+  hasLeftIcon: boolean,
+  hasRightIcon: boolean
+): string => {
+  const classNames = [styles.input];
+  
+  // Add size class with type assertion
+  const sizeClass = `input${size.charAt(0).toUpperCase() + size.slice(1)}` as const;
+  classNames.push(styles[sizeClass as keyof typeof styles]);
+  
+  // Add variant class
+  classNames.push(styles[variant]);
+  
+  // Add state classes
+  if (hasError) classNames.push(styles.error);
+  if (hasSuccess) classNames.push(styles.success);
+  if (disabled) classNames.push(styles.disabled);
+  if (loading) classNames.push(styles.loading);
+  if (highContrast) classNames.push(styles.highContrast);
+  if (hasLeftIcon) classNames.push(styles.withLeftIcon);
+  if (hasRightIcon) classNames.push(styles.withRightIcon);
+  
+  return classNames.join(' ');
 };
 
-// Get container styles
-const getContainerStyles = (fullWidth: boolean): React.CSSProperties => ({
-  position: 'relative',
-  display: 'inline-block',
-  ...(fullWidth && { width: '100%' }),
-});
+// Get container class name
+const getContainerClassName = (fullWidth: boolean): string => {
+  return fullWidth ? `${styles.container} ${styles.containerFullWidth}` : styles.container;
+};
 
-// Get icon styles
-const getIconStyles = (position: 'left' | 'right', size: TextInputSize, theme: any): React.CSSProperties => {
-  const baseIconStyles: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: theme.colors.neutral[400],
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-  };
-
-  const sizeAdjustments: Record<TextInputSize, { padding: string; iconSize: string }> = {
-    sm: { padding: theme.spacing[3], iconSize: '16px' },
-    md: { padding: theme.spacing[4], iconSize: '20px' },
-    lg: { padding: theme.spacing[5], iconSize: '24px' },
-  };
-
-  return {
-    ...baseIconStyles,
-    [position]: sizeAdjustments[size].padding,
-    width: sizeAdjustments[size].iconSize,
-    height: sizeAdjustments[size].iconSize,
-  };
+// Get icon class name
+const getIconClassName = (position: 'left' | 'right'): string => {
+  const positionClass = `icon${position.charAt(0).toUpperCase() + position.slice(1)}` as const;
+  return `${styles.icon} ${styles[positionClass as keyof typeof styles]}`;
 };
 
 // Clear button component
-const ClearButton: React.FC<{ onClear: () => void; size: TextInputSize; theme: any }> = ({ onClear, size, theme }) => {
-  const sizeMap = { sm: 16, md: 20, lg: 24 };
-  const iconSize = sizeMap[size];
-
-  return (
-    <button
-      type="button"
-      onClick={onClear}
-      style={{
-        position: 'absolute',
-        right: theme.spacing[size === 'sm' ? 2 : size === 'md' ? 3 : 4],
-        top: '50%',
-        transform: 'translateY(-50%)',
-        background: 'none',
-        border: 'none',
-        cursor: 'pointer',
-        color: theme.colors.neutral[400],
-        padding: theme.spacing[1],
-        borderRadius: theme.borderRadius.sm,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: `color ${theme.transitions.fast} ease`,
-        zIndex: 2,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.color = theme.colors.neutral[600];
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.color = theme.colors.neutral[400];
-      }}
-      aria-label="Clear input"
-    >
-      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-  );
-};
+const ClearButton: React.FC<{
+  onClear: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
+  loading: boolean;
+}> = ({ onClear, onChange, disabled, loading }) => (
+  <button
+    type="button"
+    className={styles.clearButton}
+    onClick={(e) => {
+      e.preventDefault();
+      onClear();
+      if (onChange) {
+        const target = { value: '' } as React.ChangeEvent<HTMLInputElement>['target'];
+        onChange({ target } as React.ChangeEvent<HTMLInputElement>);
+      }
+    }}
+    aria-label="Clear input"
+    disabled={disabled || loading}
+  >
+    ×
+  </button>
+);
 
 // Loading spinner
-const InputSpinner: React.FC<{ size: TextInputSize; theme: any }> = ({ size, theme }) => {
-  const sizeMap = { sm: 14, md: 16, lg: 18 };
-  const spinnerSize = sizeMap[size];
-
+const InputSpinner: React.FC<{ size: TextInputSize }> = ({ size }) => {
+  const spinnerClass = `${styles.loadingSpinner} ${size === 'sm' ? styles.loadingSpinnerSm : ''} ${size === 'lg' ? styles.loadingSpinnerLg : ''}`;
+  
   return (
-    <div
-      style={{
-        position: 'absolute',
-        right: theme.spacing[size === 'sm' ? 3 : size === 'md' ? 4 : 5],
-        top: '50%',
-        transform: 'translateY(-50%)',
-        width: spinnerSize,
-        height: spinnerSize,
-        border: '2px solid transparent',
-        borderTop: `2px solid ${theme.colors.primary[500]}`,
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
-        zIndex: 2,
-      }}
-      aria-hidden="true"
-    />
+    <div className={spinnerClass} aria-hidden="true" />
   );
 };
 
@@ -276,25 +107,15 @@ const InputLabel: React.FC<{
   htmlFor: string; 
   required?: boolean; 
   children: React.ReactNode;
-  theme: any;
   highContrast: boolean;
-}> = ({ htmlFor, required, children, theme, highContrast }) => (
+}> = ({ htmlFor, required, children, highContrast }) => (
   <label
     htmlFor={htmlFor}
-    style={{
-      display: 'block',
-      fontSize: theme.typography.fontSize.sm,
-      fontWeight: theme.typography.fontWeight.medium,
-      color: highContrast ? theme.colors.highContrast.text : theme.colors.neutral[700],
-      marginBottom: theme.spacing[1],
-    }}
+    className={`${styles.label} ${highContrast ? styles.highContrastLabel : ''}`}
   >
     {children}
     {required && (
-      <span
-        style={{ color: theme.colors.error[500], marginLeft: theme.spacing[1] }}
-        aria-label="required"
-      >
+      <span className={styles.requiredIndicator} aria-label="required">
         *
       </span>
     )}
@@ -306,26 +127,35 @@ const HelperText: React.FC<{
   id: string; 
   type: 'description' | 'error' | 'success'; 
   children: React.ReactNode;
-  theme: any;
   highContrast: boolean;
-}> = ({ id, type, children, theme, highContrast }) => {
-  const colorMap = {
-    description: highContrast ? theme.colors.highContrast.text : theme.colors.neutral[600],
-    error: theme.colors.error[600],
-    success: theme.colors.success[600],
-  };
+}> = ({ id, type, children, highContrast }) => {
+  const helperTextClass = `${styles.helperText} ${
+    type === 'error' 
+      ? styles.helperTextError 
+      : type === 'success' 
+        ? styles.helperTextSuccess 
+        : styles.helperTextDescription
+  } ${highContrast ? styles.highContrastText : ''}`;
 
+  if (type === 'error') {
+    return (
+      <div
+        id={id}
+        className={helperTextClass}
+        role="alert"
+        aria-live="assertive"
+      >
+        {children}
+      </div>
+    );
+  }
+  
   return (
     <div
       id={id}
-      style={{
-        fontSize: theme.typography.fontSize.sm,
-        color: colorMap[type],
-        marginTop: theme.spacing[1],
-        lineHeight: theme.typography.lineHeight.normal,
-      }}
-      role={type === 'error' ? 'alert' : undefined}
-      aria-live={type === 'error' ? 'polite' : undefined}
+      className={helperTextClass}
+      role="status"
+      aria-live="polite"
     >
       {children}
     </div>
@@ -334,69 +164,55 @@ const HelperText: React.FC<{
 
 // Main TextInput component
 export const TextInput: React.FC<TextInputProps> = ({
-  variant = 'outlined',
-  size = 'md',
+  id,
   type = 'text',
+  value = '',
+  onChange,
+  onBlur,
+  onFocus,
+  placeholder = '',
+  disabled = false,
+  required = false,
   label,
   description,
   error,
   success,
-  required = false,
-  disabled = false,
-  loading = false,
+  variant = 'outlined',
+  size = 'md',
+  fullWidth = false,
+  className = '',
   leftIcon,
   rightIcon,
+  clearable = true,
+  loading = false,
+  highContrast = false,
   onClear,
-  clearable = false,
-  fullWidth = false,
-  id,
-  value,
-  placeholder,
-  className,
-  style,
-  onFocus,
-  onBlur,
   ...props
 }) => {
-  const { theme, highContrast } = useTheme();
-  const [isFocused, setIsFocused] = React.useState(false);
-  const [inputId] = React.useState(id || `input-${Math.random().toString(36).substr(2, 9)}`);
+  // Theme is kept for potential future theming needs
+  useTheme();
+  const [, setIsFocused] = React.useState(false);
+  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
   
   const hasError = Boolean(error);
   const hasSuccess = Boolean(success) && !hasError;
   const hasValue = Boolean(value);
   const shouldShowClear = clearable && hasValue && !disabled && !loading;
 
-  const inputStyles = getInputStyles(
+  const inputClassName = getInputClassName(
     variant,
     size,
     hasError,
     hasSuccess,
     disabled,
     loading,
-    isFocused,
     highContrast,
-    theme
+    Boolean(leftIcon),
+    Boolean(rightIcon || shouldShowClear || loading)
   );
 
-  const containerStyles = getContainerStyles(fullWidth);
-
-  // Calculate padding adjustments for icons
-  const paddingAdjustments: React.CSSProperties = {};
-  if (leftIcon) {
-    const iconWidth = size === 'sm' ? 40 : size === 'md' ? 48 : 56;
-    paddingAdjustments.paddingLeft = `${iconWidth}px`;
-  }
-  if (rightIcon || shouldShowClear || loading) {
-    const iconWidth = size === 'sm' ? 40 : size === 'md' ? 48 : 56;
-    paddingAdjustments.paddingRight = `${iconWidth}px`;
-  }
-
-  const combinedInputStyles: React.CSSProperties = {
-    ...inputStyles,
-    ...paddingAdjustments,
-    ...style,
-  };
+  const containerClassName = getContainerClassName(fullWidth);
+  const iconClassName = (pos: 'left' | 'right') => getIconClassName(pos);
 
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     setIsFocused(true);
@@ -408,114 +224,120 @@ export const TextInput: React.FC<TextInputProps> = ({
     onBlur?.(event);
   };
 
-  const handleClear = () => {
-    onClear?.();
-  };
+
 
   // Generate ARIA attributes
   const ariaDescribedBy = [
-    description && `${inputId}-description`,
-    error && `${inputId}-error`,
-    success && `${inputId}-success`,
-  ].filter(Boolean).join(' ');
+    description ? `${inputId}-description` : undefined,
+    hasError ? `${inputId}-error` : undefined,
+    hasSuccess ? `${inputId}-success` : undefined
+  ].filter(Boolean).join(' ') || undefined;
+  
+  // ARIA attributes for error/success messages
+  const helperTextAriaProps = {
+    ...(hasError && { role: 'alert' as const, 'aria-live': 'assertive' as const }),
+    ...(hasSuccess && { role: 'status' as const, 'aria-live': 'polite' as const })
+  };
 
   return (
-    <>
-      {/* Add keyframes for loading spinner */}
-      <style>
-        {`
-          @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-        `}
-      </style>
-      <div style={containerStyles}>
-        {label && (
-          <InputLabel
-            htmlFor={inputId}
-            required={required}
-            theme={theme}
-            highContrast={highContrast}
-          >
-            {label}
-          </InputLabel>
-        )}
-        
-        <div style={{ position: 'relative' }}>
-          {leftIcon && (
-            <div style={getIconStyles('left', size, theme)}>
-              {leftIcon}
-            </div>
-          )}
-          
-          <input
-            {...props}
-            id={inputId}
-            type={type}
-            value={value}
-            placeholder={placeholder}
+    <div className={containerClassName}>
+      {label && (
+        <InputLabel
+          htmlFor={inputId}
+          required={required}
+          highContrast={highContrast}
+        >
+          {label}
+        </InputLabel>
+      )}
+      
+      <div className={styles.inputWrapper}>
+        {clearable && value && (
+          <ClearButton
+            onClear={() => onClear?.()}
             disabled={disabled}
-            required={required}
-            className={className}
-            style={combinedInputStyles}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            aria-invalid={hasError}
-            aria-describedby={ariaDescribedBy || undefined}
-            aria-busy={loading}
+            loading={loading}
+            onChange={() => {
+              if (onChange) {
+                const target = { value: '' } as React.ChangeEvent<HTMLInputElement>['target'];
+                onChange({ target } as React.ChangeEvent<HTMLInputElement>);
+              }
+            }}
           />
-          
-          {loading && <InputSpinner size={size} theme={theme} />}
-          {!loading && shouldShowClear && (
-            <ClearButton onClear={handleClear} size={size} theme={theme} />
-          )}
-          {!loading && !shouldShowClear && rightIcon && (
-            <div style={getIconStyles('right', size, theme)}>
-              {rightIcon}
-            </div>
-          )}
-        </div>
-        
-        {description && (
-          <HelperText
-            id={`${inputId}-description`}
-            type="description"
-            theme={theme}
-            highContrast={highContrast}
-          >
-            {description}
-          </HelperText>
         )}
         
-        {error && (
-          <HelperText
-            id={`${inputId}-error`}
-            type="error"
-            theme={theme}
-            highContrast={highContrast}
-          >
-            {error}
-          </HelperText>
+        {leftIcon && (
+          <div className={iconClassName('left')}>
+            {leftIcon}
+          </div>
         )}
         
-        {success && !error && (
-          <HelperText
-            id={`${inputId}-success`}
-            type="success"
-            theme={theme}
-            highContrast={highContrast}
-          >
-            {success}
-          </HelperText>
+        <input
+          {...{
+            ...props,
+            id: inputId,
+            type,
+            value,
+            placeholder,
+            disabled: disabled || loading,
+            required,
+            className: `${inputClassName} ${className || ''}`,
+            onFocus: handleFocus,
+            onBlur: handleBlur,
+            'aria-invalid': hasError ? 'true' : undefined,
+            'aria-describedby': ariaDescribedBy,
+            'aria-busy': loading ? 'true' : undefined
+          }}
+        />
+        
+        {loading && <InputSpinner size={size} />}
+        
+        {!loading && rightIcon && (
+          <div className={iconClassName('right')}>
+            {rightIcon}
+          </div>
         )}
       </div>
-    </>
+      
+      {(description || hasError || hasSuccess) && (
+        <div 
+        className={styles.helperText}
+        {...(Object.keys(helperTextAriaProps).length > 0 ? helperTextAriaProps : {})}
+      >
+          {description && (
+            <HelperText
+              id={`${inputId}-description`}
+              type="description"
+              highContrast={highContrast}
+            >
+              {description}
+            </HelperText>
+          )}
+          
+          {hasError && (
+            <HelperText
+              id={`${inputId}-error`}
+              type="error"
+              highContrast={highContrast}
+            >
+              {error}
+            </HelperText>
+          )}
+          
+          {hasSuccess && (
+            <HelperText
+              id={`${inputId}-success`}
+              type="success"
+              highContrast={highContrast}
+            >
+              {success}
+            </HelperText>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
-
-// Export types
-export type { TextInputVariant, TextInputSize, TextInputType };
 
 // Default export
 export default TextInput;
